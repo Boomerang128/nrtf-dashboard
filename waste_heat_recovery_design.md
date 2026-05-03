@@ -6,11 +6,15 @@ This report outlines a systematic approach to identifying and prioritizing waste
 
 Based on the data extracted from the Tri-Gen unit reports, we have identified three primary waste heat sources:
 
-| Source | Characterization | Temp (High) | Temp (Low) | Estimated Flux |
-| :--- | :--- | :--- | :--- | :--- |
-| **High-Temp Loop (TT04/TT03)** | Engine Jack Water / Cooling | ~99.3 °C | ~69.2 °C | ~580 kW (Thermal) |
-| **Low-Temp Loop (TT14/TT13)** | Secondary Cooling | ~71.3 °C | ~63.6 °C | ~110 kW (Thermal) |
-| **Exhaust Fumes (Estimated)** | Combustion Exhaust | ~450 °C | ~150 °C | ~800 kW (Thermal) |
+| Source | Characterization | Temp (High) | Temp (Low) | Estimated Flux | Location |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **High-Temp Loop (TT04/TT03)** | Engine Jack Water / Cooling | ~99.3 °C | ~69.2 °C | ~580 kWth | Cooling Skid A |
+| **Low-Temp Loop (TT14/TT13)** | Secondary Cooling | ~71.3 °C | ~63.6 °C | ~110 kWth | Auxiliary Hall |
+| **Exhaust Fumes (Estimated)** | Combustion Exhaust | ~450 °C | ~150 °C | ~800 kWth | Exhaust Stack |
+
+### Source Availability & Profile
+- **High-Temp Loop**: 24/7 availability (Base Load), synchronous with engine operation.
+- **Exhaust**: Highly fluctuating, follows the electrical demand profile (TT-101 logs).
 
 ### Detection Method
 We utilized a Python-based keyword analysis tool to scan historical Excel reports for temperature gradients ($\Delta T$) and power measurements. Sources were identified by correlating high temperature drops with specific "Puissance en KW" rows.
@@ -61,7 +65,26 @@ To rank these opportunities, we use the **ReTeq Recovery Matrix (RRM)**, scoring
 
 ---
 
-## 4. Implementation Methodology
+## 4. Mathematical Evidence & Calculation Basis
+
+To ensure transparency for the jury, all estimates follow these standardized industrial formulas:
+
+### Thermal Flux ($\dot{Q}$) Calculation
+$$\dot{Q} = \dot{m} \times C_p \times \Delta T$$
+- *Assumption*: Water flow rate of 15-20 m³/h based on pump ratings in site docs.
+- *$C_p$*: 4.18 kJ/kg·K (Water).
+
+### CO₂ Reduction Basis
+We use the standard emission factor for Natural Gas ($0.202 \text{ kg CO}_2 / \text{kWh}$).
+$$\Delta \text{CO}_2 = \text{Recovered Energy (kWh)} \times 0.202$$
+
+### Return on Investment (ROI)
+$$\text{ROI} = \frac{\text{Implementation Cost}}{\text{Annual Savings (Energy Price } \times \text{ kWh saved)}}$$
+- *Baseline Energy Price*: $0.08 / \text{kWh}$ (Industrial average).
+
+---
+
+## 5. Implementation Methodology
 
 1.  **Audit Phase**: Deploy IoT sensors to capture high-frequency $\Delta T$ profiles for 30 days.
 2.  **Simulation Phase**: Use a digital twin to model the integration of Scenario A and B.

@@ -103,7 +103,18 @@ class WasteHeatAnalyzer:
             print(f"{s['name'][:50]:<50} | {s['t_high']:>8.1f}°C | {s['dt']:>8.1f}°C | {rank}")
 
         print("\n" + "="*60)
-        print("  ANALYSIS COMPLETE")
+        print("  RETEQ RECOVERY MATRIX (RRM) - QUICK SCORE")
+        print("="*60)
+        print(f"{'Opportunity':<30} | {'Exergy':<8} | {'Flux (est)':<12} | {'Priority'}")
+        print("-" * 65)
+        for s in sorted_sources[:3]:
+            exergy = "HIGH" if s["t_high"] > 90 else "MID"
+            flux = f"~{s['dt']*15:.0f} kWth" # Simplified flux estimate for tool output
+            priority = "★ ★ ★" if s["t_high"] > 80 else "★ ★ ☆"
+            print(f"{s['name'][:30]:<30} | {exergy:<8} | {flux:<12} | {priority}")
+
+        print("\n" + "="*60)
+        print("  ANALYSIS COMPLETE - Ready for Jury Submission")
         print("="*60)
 
 if __name__ == "__main__":
