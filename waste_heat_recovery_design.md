@@ -1,5 +1,7 @@
 # Waste Heat Recovery Opportunity Design (Track B)
 
+![System Design Schematic](docs/assets/schematic.png)
+
 This report outlines a systematic approach to identifying and prioritizing waste heat recovery opportunities at the ReTeqFusion industrial site, based on the analyzed telemetry and process data.
 
 ## 1. Waste Heat Source Identification
@@ -84,7 +86,55 @@ $$\text{ROI} = \frac{\text{Implementation Cost}}{\text{Annual Savings (Energy Pr
 
 ---
 
-## 5. Implementation Methodology
+## 5. System Design Architecture (Energy Flow)
+
+The following diagram illustrates the physical integration of the proposed recovery scenarios into the existing Tri-Generation infrastructure:
+
+```mermaid
+graph TD
+    subgraph "Phase 1: Generation"
+        Engine["Gas Engine (1200 kW)"]
+        Exhaust["Exhaust Gas (450°C)"]
+        Jacket["Jacket Water (99°C)"]
+    end
+
+    subgraph "Phase 2: Recovery (Design)"
+        HX1["Exhaust Heat Exchanger"]
+        HX2["Plate Heat Exchanger"]
+        ORC["ORC Turbine (+100kWe)"]
+        AbsChiller["Absorption Chiller (+400kWc)"]
+        PreHeat["Boiler Pre-heater"]
+    end
+
+    subgraph "Phase 3: Utility"
+        PowerGrid["Site Electrical Grid"]
+        HVAC["Facility Cooling"]
+        SteamBoiler["Process Steam Boiler"]
+    end
+
+    Engine --> Exhaust
+    Engine --> Jacket
+
+    Exhaust --> HX1
+    HX1 --> ORC
+    ORC --> PowerGrid
+
+    Jacket --> HX2
+    HX2 --> AbsChiller
+    AbsChiller --> HVAC
+
+    Jacket --> PreHeat
+    PreHeat --> SteamBoiler
+
+    style Engine fill:#f97316,stroke:#fff,stroke-width:2px
+    style ORC fill:#3b82f6,stroke:#fff,stroke-width:2px
+    style AbsChiller fill:#06b6d4,stroke:#fff,stroke-width:2px
+    style PreHeat fill:#8b5cf6,stroke:#fff,stroke-width:2px
+```
+
+---
+
+## 6. Implementation Methodology
 
 1.  **Audit Phase**: Deploy IoT sensors to capture high-frequency $\Delta T$ profiles for 30 days.
 2.  **Simulation Phase**: Use a digital twin to model the integration of Scenario A and B.
